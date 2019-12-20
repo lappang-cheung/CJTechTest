@@ -9,7 +9,6 @@ import {Actions} from 'react-native-router-flux';
 import {Field, reduxForm} from 'redux-form';
 
 import Logo from '../components/Logo';
-import Form from '../components/Form';
 import InputText from '../components/InputText';
 
 const styles = StyleSheet.create({
@@ -48,6 +47,12 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#ffffff',
         textAlign: 'center'
+    },
+    errorText: {
+        color: '#ffffff',
+        fontSize: 14,
+        paddingHorizontal: 16,
+        paddingBottom: 8
     }
 });
 
@@ -123,6 +128,21 @@ class Signup extends Component {
     };
 };
 
+const validate = (values) => {
+    const errors = {};
+    if(!values.name){
+        errors.name = "Name is required"
+    }
+    if(!values.email){
+        errors.email = "Email is required"
+    }
+    if(!values.password){
+        errors.password = "Password is required"
+    }
+    return errors;
+};
+
 export default reduxForm({
-    form: 'register'
+    form: 'register',
+    validate
 })(Signup);
