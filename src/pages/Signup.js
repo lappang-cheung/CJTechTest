@@ -6,31 +6,11 @@ import {
     TouchableOpacity
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import {Field, reduxForm} from 'redux-form';
 
 import Logo from '../components/Logo';
 import Form from '../components/Form';
-
-class Signup extends Component {
-
-    login = () => {
-        Actions.pop();
-    };
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <Logo />
-                <Form type="Signup" />
-                <View style={styles.signupTextCont}>
-                    <Text style={styles.signupText}>Already have an account?</Text>
-                    <TouchableOpacity onPress={this.login}>
-                    <Text style={styles.signupButton}> Login</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        );
-    };
-};
+import InputText from '../components/InputText';
 
 const styles = StyleSheet.create({
 	container: {
@@ -54,7 +34,95 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontSize: 16,
         fontWeight: '500'
+    },
+    button: {
+        width: 300,
+        backgroundColor: 'rgba(255,255,255,.3)',
+        borderRadius: 25,
+        marginVertical: 10,
+        paddingVertical: 10,
+        backgroundColor: '#1c313a'
+    },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#ffffff',
+        textAlign: 'center'
     }
 });
 
-export default Signup;
+
+class Signup extends Component {
+
+    login = () => {
+        Actions.pop();
+    };
+
+    renderTextInput = (field) => {
+        const {meta: {touched, error}, label, secureTextEntry, maxLength, keyboardType, placeholder, input: {onChange, ...restInput}} = field;
+        return (
+            <View>
+              <InputText
+                onChangeText={onChange}
+                maxLength={maxLength}
+                placeholder={placeholder}
+                keyboardType={keyboardType}
+                secureTextEntry={secureTextEntry}
+                label={label}
+                {...restInput} />
+                {(touched && error) && <Text style={styles.errorText}>{error}</Text>}
+            </View>
+        );
+    }
+
+    onSubmit = (values) => {
+        console.log(values)
+    }
+
+    render() {
+
+        const {handleSubmit} = this.props;
+
+        return (
+            <View style={styles.container}>
+                <Logo />
+                <Field
+                    name="name"
+                    placeholder="Name"
+                    component={this.renderTextInput}
+                />
+                <Field
+                    name="email"
+                    placeholder="Email"
+                    component={this.renderTextInput}
+                />
+                <Field
+                    name="password"
+                    placeholder="Password"
+                    secureTextEntry={true}
+                    component={this.renderTextInput}
+                />
+
+                <TouchableOpacity
+                    onPress={handleSubmit(this.onSubmit)}
+                    style={styles.button}
+                >
+                    <Text style={styles.buttonText}>
+                        Signup
+                    </Text>
+                </TouchableOpacity>
+
+                <View style={styles.signupTextCont}>
+                    <Text style={styles.signupText}>Already have an account?</Text>
+                    <TouchableOpacity onPress={this.login}>
+                        <Text style={styles.signupButton}> Login</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    };
+};
+
+export default reduxForm({
+    form: 'register'
+})(Signup);
