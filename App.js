@@ -3,11 +3,14 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
+import {Provider} from 'react-redux';
+import store from './src/redux/config/store';
 
-import Routes from './src/Routes'
+import Routes from './src/configs/Routes'
 
 const App = () => {
 	return (
+		<Provider store={store}>
 		<>
 			<StatusBar
 				barStyle="dark-content"
@@ -15,6 +18,7 @@ const App = () => {
 			
 			<Routes />
 		</>
+		</Provider>
 	);
 };
 
