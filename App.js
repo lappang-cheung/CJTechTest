@@ -1,9 +1,18 @@
 import React from 'react';
-import Main from './src/Main';
+
+import {Provider} from 'react-redux';
+import store from './src/redux/config/store';
+
+import Main from './src/Main'
+
 
 const App = () => {
 	return (
-		<Main />
+		<Provider store={store}>
+			<>
+				<Main />
+			</>
+		</Provider>
 	);
 };
 

@@ -4,21 +4,16 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {Provider} from 'react-redux';
-import store from './redux/config/store';
-
 import Routes from './configs/Routes';
 
 const Main = () => {
 	return (
-		<Provider store={store}>
-		<>
-			<StatusBar
-				barStyle="dark-content"
-			/>
-			<Routes />
-		</>
-		</Provider>
+        <>
+            <StatusBar
+                barStyle="dark-content"
+            />
+            <Routes />
+        </>
 	);
 };
 
