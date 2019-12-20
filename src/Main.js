@@ -3,6 +3,7 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
+import {connect} from 'react-redux';
 
 import Routes from './configs/Routes';
 
@@ -26,4 +27,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default Main;
+export default connect(null,null)(Main);
