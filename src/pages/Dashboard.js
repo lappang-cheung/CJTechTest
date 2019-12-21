@@ -6,12 +6,19 @@ import {
     SafeAreaView,
     TouchableOpacity,
     FlatList,
+    Button
 } from 'react-native';
 import {connect} from "react-redux";
 import { ListItem } from 'react-native-elements';
 
 import {logoutUser} from "../redux/actions/auth.action";
-import {getActiveCampaigns} from "../redux/actions/campaign.action";
+import {
+    getActiveCampaigns, 
+    getOpportunityCampaigns, 
+    getNegotationCampaigns
+} from "../redux/actions/campaign.action";
+
+import Loader from '../components/Loader';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,6 +30,17 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+    },
+    campaignButtons: {
+        textAlign:'center'
+    },
+    
+    campaignButtonSelected:{
+        backgroundColor: '#6A0DAD'
     },
     textStyles: {
         color: "#ffffff",
@@ -51,28 +69,53 @@ const styles = StyleSheet.create({
 
 class Dashboard extends Component {
 
+    state = {
+        campaignData: {},
+        buttonSelected: 1
+    }
+
     componentDidMount = async () => {
-       await this.campaignsActive()
+       await this.campaignsActive(this.props.auth.token)
     }
     
     logoutUser = () => {
         this.props.dispatch(logoutUser());
     }
 
-    campaignsActive = () => {
-        this.props.dispatch(getActiveCampaigns(this.props.auth.token))
+    campaignsActive = async (token) => {
+        await this.props.dispatch(getActiveCampaigns(token));
+        this.loadCampaignData(this.props.activeCampaigns)
+    };
+
+    campaignsOpportunity = async (token) => {
+        await this.props.dispatch(getOpportunityCampaigns(token));
+        this.loadCampaignData(this.props.opportunityCampaigns)
+    };
+
+    campaignsNegotation = async (token) => {
+        await this.props.dispatch(getNegotationCampaigns(token));
+        this.loadCampaignData(this.props.negotationCampaigns)
+    };
+
+    loadCampaignData = (data) => {
+        this.setState({
+            campaignData: data
+        });
     };
 
     render() {
 
 
-        const {getUser:{userDetails}, campaigns:{campaigns}} = this.props;
+        const {getUser:{userDetails}, auth: {token}} = this.props;
+        const {campaignData, buttonSelected} = this.state;
 
         const name = (userDetails) ? userDetails.body.user.firstName : ""
 
+        console.log(campaignData.loading);
 
         return (
             <SafeAreaView style={styles.container}>
+
                 <View style={styles.topContainer}>
                     <Text style={styles.textStyles}>Hello, {name}!</Text>
                     <TouchableOpacity style={styles.button} onPress={this.logoutUser}>
@@ -80,18 +123,40 @@ class Dashboard extends Component {
                     </TouchableOpacity>
                 </View>
                 
-                <FlatList
-                    data={campaigns}
-                    renderItem={({ item }) => 
-                        <ListItem 
-                            leftAvatar={{ source: { uri: item.brand.logo } }}
-                            title={`${item.brand.name}`}
-                            subtitle={item.brand.website}
-                            bottomDivider
+                {campaignData.loading !== false && <Loader/>}
+                {campaignData.loading === false &&
+                    <>
+                        <View style={styles.buttonContainer}>
+                            <Button
+                                style={buttonSelected == 1 ? styles.campaignButtonSelected : styles.campaignButtons} 
+                                title="Active"
+                                onPress={() => {this.campaignsActive(token), this.setState({buttonSelected: 1})}}
+                            />
+                            <Button 
+                                style={styles.campaignButtons}
+                                title="Opportunity"
+                                onPress={() => {this.campaignsOpportunity(token), this.setState({buttonSelected: 2})}}
+                            />
+                            <Button
+                                style={styles.campaignButtons} 
+                                title="Negotation"
+                                onPress={() => {this.campaignsNegotation(token), this.setState({buttonSelected: 3})}}
+                            />
+                        </View>
+                        <FlatList
+                            data={campaignData.campaigns}
+                            renderItem={({ item }) => 
+                                <ListItem 
+                                    leftAvatar={{ source: { uri: item.brand.logo } }}
+                                    title={`${item.brand.name}`}
+                                    subtitle={item.brand.website}
+                                    bottomDivider
+                                />
+                            }
+                            keyExtractor={item => item.id}
                         />
-                    }
-                    keyExtractor={item => item.id}
-                />
+                    </>
+                }
             </SafeAreaView>
         );
     };
@@ -101,7 +166,9 @@ class Dashboard extends Component {
 mapStateToProps = (state) => ({
     getUser: state.userReducer.getUser,
     auth: state.authReducer.authData,
-    campaigns: state.campaignReducer.getActiveCampaigns
+    activeCampaigns: state.campaignReducer.getActiveCampaigns,
+    opportunityCampaigns: state.campaignReducer.getOpportunityCampaigns,
+    negotationCampaigns: state.campaignReducer.getNegotationCampaigns
 });
 
 mapDispatchToProps = (dispatch) => ({
