@@ -6,7 +6,6 @@ import {
     SafeAreaView,
     TouchableOpacity,
     FlatList,
-    Button
 } from 'react-native';
 import {connect} from "react-redux";
 import { ListItem } from 'react-native-elements';
@@ -36,11 +35,24 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly'
     },
     campaignButtons: {
-        textAlign:'center'
+        backgroundColor: '#ffffff',
+        flexGrow: 1,
+        marginVertical: 10,
+        paddingVertical: 10,
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 1
     },
-    
+    campaignButtonText: {
+        textAlign:'center',
+        fontSize: 16,
+        fontWeight:'500',
+    },  
     campaignButtonSelected:{
-        backgroundColor: '#6A0DAD'
+        backgroundColor: '#6A0DAD',
+        flexGrow: 1,
+        marginVertical: 10,
+        paddingVertical: 10,
     },
     textStyles: {
         color: "#ffffff",
@@ -111,7 +123,6 @@ class Dashboard extends Component {
 
         const name = (userDetails) ? userDetails.body.user.firstName : ""
 
-        console.log(campaignData.loading);
 
         return (
             <SafeAreaView style={styles.container}>
@@ -122,26 +133,34 @@ class Dashboard extends Component {
                         <Text style={styles.buttonText}>Logout</Text>
                     </TouchableOpacity>
                 </View>
-                
+
                 {campaignData.loading !== false && <Loader/>}
                 {campaignData.loading === false &&
                     <>
                         <View style={styles.buttonContainer}>
-                            <Button
+
+                            <TouchableOpacity
                                 style={buttonSelected == 1 ? styles.campaignButtonSelected : styles.campaignButtons} 
                                 title="Active"
                                 onPress={() => {this.campaignsActive(token), this.setState({buttonSelected: 1})}}
-                            />
-                            <Button 
-                                style={styles.campaignButtons}
+                            >
+                                <Text style={styles.campaignButtonText}>Active</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={buttonSelected == 2 ? styles.campaignButtonSelected : styles.campaignButtons}
                                 title="Opportunity"
                                 onPress={() => {this.campaignsOpportunity(token), this.setState({buttonSelected: 2})}}
-                            />
-                            <Button
-                                style={styles.campaignButtons} 
+                            >
+                                <Text style={styles.campaignButtonText}>Opportunity</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={buttonSelected == 3 ? styles.campaignButtonSelected : styles.campaignButtons} 
                                 title="Negotation"
                                 onPress={() => {this.campaignsNegotation(token), this.setState({buttonSelected: 3})}}
-                            />
+                            >
+                                <Text style={styles.campaignButtonText}>Negoitation</Text>
+                            </TouchableOpacity>
                         </View>
                         <FlatList
                             data={campaignData.campaigns}
