@@ -9,34 +9,35 @@ import {
     GET_USER_SUCCESS,
     USER_LOGGED_OUT_SUCCESS
 } from '../actions/types'
-import {fetchApi} from '../../service/api';
+import axios from 'axios'
 
 export const createNewUser = (payload) => {
 
     return async (dispatch) => {
         try{
             dispatch({ type: CREATE_USER_LOADING});
-            const response = await fetchApi("/auth/register", "POST", payload, 200);
+            axios.defaults.baseURL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1";
+            const reqData = await axios.post("/auth/signin", payload);
 
-            if(response.success){
+            if(reqData.status === 200){
                 dispatch({ 
                     type: CREATE_USER_SUCCESS,
                 });
                 dispatch({
                     type: AUTH_USER_SUCCESS,
-                    token: response.token
+                    token: reqData.data.body.token
                 });
                 dispatch({
                     type: GET_USER_SUCCESS,
-                    payload: response.responseBody
+                    payload: reqData.data
                 })
             } else {
-                throw response;
+                throw reqData;
             }
         }catch(error){
             dispatch({ 
                 type: CREATE_USER_FAIL,
-                payload: error.responseBody
+                payload: error._response
             });
         }
     };
@@ -47,27 +48,28 @@ export const loginUser = (payload) => {
     return async (dispatch) => {
         try{
             dispatch({ type: LOGIN_USER_LOADING});
-            const response = await fetchApi("/auth/signin", "POST", payload, 200);
-            console.log(payload)
-            if(response.success){
+            axios.defaults.baseURL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1";
+            const reqData = await axios.post("/auth/signin", payload);
+            
+            if(reqData.status === 200){
                 dispatch({ 
                     type: LOGIN_USER_SUCCESS
                 });
                 dispatch({
                     type: AUTH_USER_SUCCESS,
-                    token: response.token
+                    token: reqData.data.body.token
                 });
                 dispatch({
                     type: GET_USER_SUCCESS,
-                    payload: response.responseBody
+                    payload: reqData.data
                 })
             } else {
-                throw response;
+                throw reqData
             }
         }catch(error){
             dispatch({ 
                 type: LOGIN_USER_FAIL,
-                payload: error.responseBody
+                payload: error._response
             });
         }
     };
@@ -78,7 +80,7 @@ export const logoutUser = () => {
         const state = getState();
         try {
             const {authReducer: {authData: {token}}} = state;
-            const response = await fetchApi("/auth/logout", "DELETE", null, 200, token);
+            
             dispatch({
                 type: USER_LOGGED_OUT_SUCCESS
             });

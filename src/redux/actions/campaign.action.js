@@ -11,7 +11,7 @@ export const getActiveCampaigns = token => {
         
         try{
             dispatch({ type: GET_ACTIVE_CAMPAIGNS_LOADING});
-            axios.defaults.baseURL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1",
+            axios.defaults.baseURL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1"
             axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
             await axios.get("/campaigns/active")
                 .then( response => 
