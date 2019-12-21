@@ -57,9 +57,11 @@ class Dashboard extends Component {
     render() {
 
 
-        const {getUser, campaigns:{campaigns}} = this.props;
+        const {getUser:{userDetails}, campaigns:{campaigns}} = this.props;
          // Won't like destructure in the props
-        const name = (getUser && getUser.userDetails) ? getUser.userDetails.body.user.firstName : ""
+        const name = (userDetails) ? userDetails.body.user.firstName : ""
+
+        console.log(campaigns);
 
         return (
             <SafeAreaView style={styles.container}>

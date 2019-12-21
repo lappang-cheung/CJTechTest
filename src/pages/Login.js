@@ -94,10 +94,7 @@ class Login extends Component {
         
         await this.props.dispatch(loginUser(values));
 
-        console.log(this.props.loginUser)
-
         if(this.props.loginUser.isSuccess !== true){
-           
             Alert.alert(
                 'Warning',
                 'Invalid email or password',
