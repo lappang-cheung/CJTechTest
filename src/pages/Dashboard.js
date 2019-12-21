@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View,
     SafeAreaView,
     TouchableOpacity,
     FlatList,
 } from 'react-native';
 import {connect} from "react-redux";
+import { ListItem } from 'react-native-elements';
 
 import {logoutUser} from "../redux/actions/auth.action";
 import {getActiveCampaigns} from "../redux/actions/campaign.action";
@@ -71,7 +71,15 @@ class Dashboard extends Component {
                 </TouchableOpacity>
                 <FlatList
                     data={campaigns}
-                    renderItem={({ item }) => <Text>{item.id}</Text>}
+                    // renderItem={({ item }) => <Text>{item.id}</Text>}
+                    renderItem={({ item }) => 
+                        <ListItem 
+                            leftAvatar={{ source: { uri: item.brand.logo } }}
+                            title={`${item.brand.name}`}
+                            subtitle={item.brand.website}
+                            bottomDivider
+                        />
+                    }
                     keyExtractor={item => item.id}
                 />
             </SafeAreaView>
