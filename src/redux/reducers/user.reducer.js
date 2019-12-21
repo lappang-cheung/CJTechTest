@@ -1,8 +1,13 @@
+import {
+    GET_USER_LOADING,
+    GET_USER_SUCCESS,
+    GET_USER_FAIL
+} from '../actions/types'
 import { combineReducers} from 'redux';
 
 const getUser = (state={}, action) => {
     switch (action.type){
-        case "GET_USER_LOADING":
+        case GET_USER_LOADING:
             return {
                 isLoading: true,
                 isError: false,
@@ -10,7 +15,7 @@ const getUser = (state={}, action) => {
                 userDetails: null,
                 errors: null
             }
-        case "GET_USER_SUCCESS":
+        case GET_USER_SUCCESS:
             return {
                 isLoading: false,
                 isError: false,
@@ -18,7 +23,7 @@ const getUser = (state={}, action) => {
                 userDetails: action.payload,
                 errors: null
             }
-        case "GET_USER_FAIL":
+        case GET_USER_FAIL:
             return {
                 isLoading: false,
                 isError: false,
