@@ -67,7 +67,7 @@ export const logoutUser = () => {
         const state = getState();
         try {
             const {authReducer: {authData: {token}}} = state;
-            const response = await fetchApi("/user/logout", "DELETE", null, 200, token);
+            const response = await fetchApi("/auth/logout", "DELETE", null, 200, token);
             dispatch({
                 type: "USER_LOGGED_OUT_SUCCESS"
             });

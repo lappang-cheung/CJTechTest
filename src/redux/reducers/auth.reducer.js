@@ -1,16 +1,26 @@
-import {combineReducers} from 'redux'
+import {
+    AUTH_USER_FAIL,
+    AUTH_USER_SUCCESS,
+    LOGIN_USER_LOADING,
+    LOGIN_USER_SUCCESS,
+    LOGIN_USER_FAIL,
+    CREATE_USER_LOADING,
+    CREATE_USER_SUCCESS,
+    CREATE_USER_FAIL
+} from '../actions/types'
+import {combineReducers} from 'redux';
 
 const authData = (state = {}, action) => {
     switch (action.type) {
-        case "AUTH_USER_SUCCESS":
+        case AUTH_USER_SUCCESS:
             return {
               token: action.token,
               isLoggedIn: true
             }
 
-        case "CREATE_USER_FAIL":
-        case "LOGIN_USER_FAIL" :
-        case "AUTH_USER_FAIL":
+        case CREATE_USER_FAIL:
+        case LOGIN_USER_FAIL :
+        case AUTH_USER_FAIL:
             return {
                 token: null,
                 isLoggedIn: false
@@ -22,7 +32,7 @@ const authData = (state = {}, action) => {
 
 const loginUser = (state={}, action) => {
     switch(action.type) {
-        case "LOGIN_USER_LOADING":
+        case LOGIN_USER_LOADING:
             return {
                 isLoading: true,
                 isError: false,
@@ -30,7 +40,7 @@ const loginUser = (state={}, action) => {
                 errors: null,
             }
 
-        case "LOGIN_USER_SUCCESS":
+        case LOGIN_USER_SUCCESS:
             return {
                 isLoading: false,
                 isError: false,
@@ -38,7 +48,7 @@ const loginUser = (state={}, action) => {
                 errors: null,
             }
 
-        case "LOGIN_USER_FAIL":
+        case LOGIN_USER_FAIL:
             return {
                 isLoading: false,
                 isError: true,
@@ -53,7 +63,7 @@ const loginUser = (state={}, action) => {
 
 const createUser = (state={}, action) => {
     switch(action.type) {
-        case "CREATE_USER_LOADING":
+        case CREATE_USER_LOADING:
             return {
                 isLoading: true,
                 isError: false,
@@ -61,7 +71,7 @@ const createUser = (state={}, action) => {
                 errors: null,
             }
 
-        case "CREATE_USER_SUCCESS":
+        case CREATE_USER_SUCCESS:
             return {
                 isLoading: false,
                 isError: false,
@@ -69,7 +79,7 @@ const createUser = (state={}, action) => {
                 errors: null,
             }
 
-        case "CREATE_USER_FAIL":
+        case CREATE_USER_FAIL:
             return {
                 isLoading: false,
                 isError: true,
