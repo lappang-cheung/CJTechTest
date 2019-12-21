@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     Text,
     View,
     TouchableOpacity,
@@ -17,53 +16,7 @@ import Logo from '../components/Logo';
 import InputText from '../components/InputText';
 import Loader from '../components/Loader';
 
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: '#455a64',
-		flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    signupTextCont: {
-        flexGrow: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        paddingVertical: 16,
-        flexDirection: 'row'
-    },
-    signupText: {
-        color: 'rgba(255,255,255,0.7)',
-        fontSize: 16,
-    },
-    signupButton: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: '500'
-    },
-    button: {
-        width: 300,
-        backgroundColor: 'rgba(255,255,255,.3)',
-        borderRadius: 25,
-        marginVertical: 10,
-        paddingVertical: 10,
-        backgroundColor: '#1c313a'
-    },
-    buttonText: {
-        fontSize: 16,
-        fontWeight: '500',
-        color: '#ffffff',
-        textAlign: 'center'
-    },
-    errorText: {
-        color: '#ffffff',
-        fontSize: 14,
-        paddingHorizontal: 16,
-        paddingBottom: 8
-    },
-    inputBox: {
-        height: 40
-    },
-});
+import loginStyles from '../styles/Login/loginStyles';
 
 
 class Login extends Component {
@@ -77,7 +30,7 @@ class Login extends Component {
         return (
             <View>
               <InputText
-                style={styles.inputBox}
+                style={loginStyles.inputBox}
                 onChangeText={onChange}
                 maxLength={maxLength}
                 placeholder={placeholder}
@@ -85,7 +38,7 @@ class Login extends Component {
                 secureTextEntry={secureTextEntry}
                 label={label}
                 {...restInput} />
-                {(touched && error) && <Text style={styles.errorText}>{error}</Text>}
+                {(touched && error) && <Text style={loginStyles.errorText}>{error}</Text>}
             </View>
         );
     }
@@ -118,7 +71,7 @@ class Login extends Component {
         const {handleSubmit, loginUser} = this.props;
 
         return (
-            <View style={styles.container}>
+            <View style={loginStyles.container}>
                 {(loginUser && loginUser.isLoading) && <Loader/>}
                 <Logo />
                 <Field
@@ -135,17 +88,17 @@ class Login extends Component {
 
                 <TouchableOpacity
                     onPress={handleSubmit(this.onSubmit)}
-                    style={styles.button}
+                    style={loginStyles.button}
                 >
-                    <Text style={styles.buttonText}>
+                    <Text style={loginStyles.buttonText}>
                         Login
                     </Text>
                 </TouchableOpacity>
 
-                <View style={styles.signupTextCont}>
-                    <Text style={styles.signupText}>Already have an account?</Text>
+                <View style={loginStyles.signupTextCont}>
+                    <Text style={loginStyles.signupText}>Already have an account?</Text>
                     <TouchableOpacity onPress={this.login}>
-                        <Text style={styles.signupButton}> Login</Text>
+                        <Text style={loginStyles.signupButton}> Signup</Text>
                     </TouchableOpacity>
                 </View>
             </View>

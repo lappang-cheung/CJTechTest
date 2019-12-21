@@ -14,7 +14,7 @@ class Logo extends Component {
                     styles={styles.loginLogo}
                     source={require('../images/logo.png')}
                 />
-                <Text style={styles.logoText}>Clout Jam</Text>
+                <Text style={styles.logoText}>Welcome to CloutJam!</Text>
             </View>
         )
     }

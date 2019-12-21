@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     Text,
     View,
     SafeAreaView,
@@ -19,64 +18,7 @@ import {
 
 import Loader from '../components/Loader';
 
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: '#455a64',
-        flexGrow: 1
-    },
-    topContainer: {
-        flexGrow: 1,
-        alignItems: 'flex-start',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly'
-    },
-    campaignButtons: {
-        backgroundColor: '#ffffff',
-        flexGrow: 1,
-        marginVertical: 10,
-        paddingVertical: 10,
-        borderColor: 'black',
-        borderWidth: 1,
-        borderRadius: 1
-    },
-    campaignButtonText: {
-        textAlign:'center',
-        fontSize: 16,
-        fontWeight:'500',
-    },  
-    campaignButtonSelected:{
-        backgroundColor: '#6A0DAD',
-        flexGrow: 1,
-        marginVertical: 10,
-        paddingVertical: 10,
-    },
-    textStyles: {
-        color: "#ffffff",
-        paddingLeft: 10,
-        paddingTop: 20
-    },
-    textStyle: {
-        color: "#fff",
-        fontSize: 18,
-    },
-    button: {
-        width:130,
-        backgroundColor:'#1c313a',
-        borderRadius: 25,
-        marginVertical: 10,
-        paddingVertical: 10,
-    },
-    buttonText: {
-        fontSize:12,
-        fontWeight:'500',
-        color:'#ffffff',
-        textAlign:'center'
-    }
-});
+import dashboardStyles from '../styles/Dashboard/dashboardStyles'
 
 
 class Dashboard extends Component {
@@ -125,41 +67,41 @@ class Dashboard extends Component {
 
 
         return (
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={dashboardStyles.container}>
 
-                <View style={styles.topContainer}>
-                    <Text style={styles.textStyles}>Hello, {name}!</Text>
-                    <TouchableOpacity style={styles.button} onPress={this.logoutUser}>
-                        <Text style={styles.buttonText}>Logout</Text>
+                <View style={dashboardStyles.topContainer}>
+                    <Text style={dashboardStyles.textdashboardStyles}>Hello, {name}!</Text>
+                    <TouchableOpacity style={dashboardStyles.button} onPress={this.logoutUser}>
+                        <Text style={dashboardStyles.buttonText}>Logout</Text>
                     </TouchableOpacity>
                 </View>
 
                 {campaignData.loading !== false && <Loader/>}
                 {campaignData.loading === false &&
                     <>
-                        <View style={styles.buttonContainer}>
+                        <View style={dashboardStyles.buttonContainer}>
 
                             <TouchableOpacity
-                                style={buttonSelected == 1 ? styles.campaignButtonSelected : styles.campaignButtons} 
+                                style={buttonSelected == 1 ? dashboardStyles.campaignButtonSelected : dashboardStyles.campaignButtons} 
                                 title="Active"
                                 onPress={() => {this.campaignsActive(token), this.setState({buttonSelected: 1})}}
                             >
-                                <Text style={styles.campaignButtonText}>Active</Text>
+                                <Text style={dashboardStyles.campaignButtonText}>Active</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                style={buttonSelected == 2 ? styles.campaignButtonSelected : styles.campaignButtons}
+                                style={buttonSelected == 2 ? dashboardStyles.campaignButtonSelected : dashboardStyles.campaignButtons}
                                 title="Opportunity"
                                 onPress={() => {this.campaignsOpportunity(token), this.setState({buttonSelected: 2})}}
                             >
-                                <Text style={styles.campaignButtonText}>Opportunity</Text>
+                                <Text style={dashboardStyles.campaignButtonText}>Opportunity</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={buttonSelected == 3 ? styles.campaignButtonSelected : styles.campaignButtons} 
+                                style={buttonSelected == 3 ? dashboardStyles.campaignButtonSelected : dashboardStyles.campaignButtons} 
                                 title="Negotation"
                                 onPress={() => {this.campaignsNegotation(token), this.setState({buttonSelected: 3})}}
                             >
-                                <Text style={styles.campaignButtonText}>Negoitation</Text>
+                                <Text style={dashboardStyles.campaignButtonText}>Negoitation</Text>
                             </TouchableOpacity>
                         </View>
                         <FlatList
