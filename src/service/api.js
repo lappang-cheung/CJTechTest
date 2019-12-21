@@ -26,9 +26,9 @@ export const api = async (url, method, body = null, headers = {}) => {
 
       const response = await Promise.race([fetchPromise, timeOutPromise]);
 
-      return response;
+        return response;
     } catch (e) {
-      return e;
+        return e;   
     }
 }
 
@@ -49,20 +49,22 @@ export const fetchApi = async (url, method, body, statusCode, token = null, load
         if(response.status === statusCode) {
             result.success = true;
 
-            if(response.headers.get("x-auth")) {
-                result.token = response.headers.get("x-auth");
-            }
+            // console.log(response)
 
             let responseBody;
             const responseText = await response.text();
 
             try {
                 responseBody = JSON.parse(responseText);
+                result.token = responseBody.body.token;
             } catch (e) {
                 responseBody = responseText;
             }
 
             result.responseBody = responseBody;
+
+            console.log(result)
+
             return result;
 
         }
@@ -77,8 +79,6 @@ export const fetchApi = async (url, method, body, statusCode, token = null, load
         }
 
         result.responseBody = errorBody;
-
-        console.log(result);
 
         throw result;
     } catch (error) {
