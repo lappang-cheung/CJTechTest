@@ -1,32 +1,88 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
     Text,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
+import {Field, reduxForm, reset} from 'redux-form';
+
+import {loginUser} from '../redux/actions/auth.action';
 
 import Logo from '../components/Logo';
-import Form from '../components/Form';
+import Loader from '../components/Loader';
+import renderTextInput from '../components/renderTextInput';
+
+import loginStyles from '../styles/Login/loginStyles';
+
 
 class Login extends Component {
 
-    signup = () => {
-        Actions.signup()
-    }
+    login = () => {
+        Actions.signup();
+    };
+
+    
+
+    loginUser = async (values) => {
+        
+        await this.props.dispatch(loginUser(values));
+
+        if(this.props.loginUser.isSuccess !== true){
+            Alert.alert(
+                'Warning',
+                'Invalid email or password',
+                [
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                {cancelable: false},
+            );
+        };
+    
+    };
+        
+
+    onSubmit = (values, dispatch) => {
+        this.loginUser(values);
+        dispatch(reset('login'));
+    };
 
     render() {
+
+        const {handleSubmit, loginUser} = this.props;
+
         return (
-            <View style={styles.container}>
+            <View style={loginStyles.container}>
+                {(loginUser && loginUser.isLoading) && <Loader/>}
                 <Logo />
-                <Form type="Login" />
-                <View style={styles.signupTextCont}>
-                    <Text style={styles.signupText}>Don't have an account yet?</Text>
-                    <TouchableOpacity
-                        onPress={this.signup}
-                    >
-                        <Text style={styles.signupButton}> Signup</Text>
+                <Field
+                    name="email"
+                    placeholder="Email"
+                    component={renderTextInput}
+                />
+                <Field
+                    name="password"
+                    placeholder="Password"
+                    secureTextEntry={true}
+                    component={renderTextInput}
+                />
+
+                <TouchableOpacity
+                    onPress={handleSubmit(this.onSubmit)}
+                    style={loginStyles.button}
+                >
+                    <Text style={loginStyles.buttonText}>
+                        Login
+                    </Text>
+                </TouchableOpacity>
+
+                <View style={loginStyles.signupTextCont}>
+                    <Text style={loginStyles.signupText}>Already have an account?</Text>
+                    <TouchableOpacity onPress={this.login}>
+                        <Text style={loginStyles.signupButton}> Signup</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -34,29 +90,32 @@ class Login extends Component {
     };
 };
 
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: '#455a64',
-		flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    signupTextCont: {
-        flexGrow: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        paddingVertical: 16,
-        flexDirection: 'row'
-    },
-    signupText: {
-        color: 'rgba(255,255,255,0.7)',
-        fontSize: 16,
-    },
-    signupButton: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: '500'
+const validate = (values) => {
+    const errors = {};
+    if(!values.name){
+        errors.name = "Name is required"
     }
+    if(!values.email){
+        errors.email = "Email is required"
+    }
+    if(!values.password){
+        errors.password = "Password is required"
+    }
+    return errors;
+};
+
+const mapStateToProps = (state) => ({
+    loginUser: state.authReducer.loginUser
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    dispatch
 });
 
-export default Login;
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    reduxForm({
+        form: 'login',
+        validate
+    })
+)(Login);

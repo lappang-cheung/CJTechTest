@@ -1,30 +1,23 @@
 import React from 'react';
-import {
-  StyleSheet,
-  StatusBar,
-} from 'react-native';
+import {PersistGate} from 'redux-persist/integration/react';
 
-import Routes from './src/Routes'
+import {Provider} from 'react-redux';
+import persist from './src/redux/config/store';
+
+import Main from './src/Main'
+
+const persistStore = persist();
 
 const App = () => {
-	return (
-		<>
-			<StatusBar
-				barStyle="dark-content"
-			/>
-			
-			<Routes />
-		</>
+	return ( 
+		<Provider store={persistStore.store}>
+			<PersistGate loading={null} persistor={persistStore.persistor}>
+				<>
+					<Main />
+				</>
+			</PersistGate>
+		</Provider>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: '#455a64',
-		flex: 1,
-		 alignItems: 'center',
-		 justifyContent: 'center'
-	}
-});
 
 export default App;

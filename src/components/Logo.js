@@ -1,3 +1,4 @@
+// Required class
 import React, { Component } from 'react';
 import {
     Text,
@@ -6,6 +7,7 @@ import {
     StyleSheet
 } from 'react-native';
 
+// To show logo
 class Logo extends Component {
     render() {
         return (
@@ -14,7 +16,7 @@ class Logo extends Component {
                     styles={styles.loginLogo}
                     source={require('../images/logo.png')}
                 />
-                <Text style={styles.logoText}>Clout Jam</Text>
+                <Text style={styles.logoText}>Welcome to CloutJam!</Text>
             </View>
         )
     }
