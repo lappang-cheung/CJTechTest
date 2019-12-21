@@ -4,7 +4,8 @@ import {
     Text,
     View,
     SafeAreaView,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList,
 } from 'react-native';
 import {connect} from "react-redux";
 
@@ -41,31 +42,36 @@ const styles = StyleSheet.create({
 
 class Dashboard extends Component {
 
+    componentDidMount = async () => {
+       await this.campaignsActive()
+    }
     
     logoutUser = () => {
         this.props.dispatch(logoutUser());
     }
 
     campaignsActive = () => {
-        const token = { "token": `Bearer ${this.props.auth.token}`};
         this.props.dispatch(getActiveCampaigns(this.props.auth.token))
     };
 
     render() {
 
 
-        const {getUser, campaigns} = this.props;
-        console.log(campaigns)
-        // Won't like destructure in the props
+        const {getUser, campaigns:{campaigns}} = this.props;
+         // Won't like destructure in the props
         const name = (getUser && getUser.userDetails) ? getUser.userDetails.body.user.firstName : ""
-
 
         return (
             <SafeAreaView style={styles.container}>
-            <Text style={styles.textStyles}>Hello, {name}!</Text>
+                <Text style={styles.textStyles}>Hello, {name}!</Text>
                 <TouchableOpacity style={styles.button} onPress={this.campaignsActive}>
                     <Text style={styles.buttonText}>Logout</Text>
                 </TouchableOpacity>
+                <FlatList
+                    data={campaigns}
+                    renderItem={({ item }) => <Text>{item.id}</Text>}
+                    keyExtractor={item => item.id}
+                />
             </SafeAreaView>
         );
     };
@@ -75,7 +81,7 @@ class Dashboard extends Component {
 mapStateToProps = (state) => ({
     getUser: state.userReducer.getUser,
     auth: state.authReducer.authData,
-    campaigns: state.campaignReducer
+    campaigns: state.campaignReducer.getActiveCampaigns
 });
 
 mapDispatchToProps = (dispatch) => ({
