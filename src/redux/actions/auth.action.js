@@ -7,16 +7,16 @@ import {
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL,
     GET_USER_SUCCESS,
-    USER_LOGGED_OUT_SUCCESS
+    USER_LOGGED_OUT_SUCCESS,
+    AUTH_USER_FAIL
 } from '../actions/types'
-import axios from 'axios'
+import axios from '../../service/api'
 
 export const createNewUser = (payload) => {
 
     return async (dispatch) => {
         try{
             dispatch({ type: CREATE_USER_LOADING});
-            axios.defaults.baseURL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1";
             const reqData = await axios.post("/auth/signin", payload);
 
             if(reqData.status === 200){
@@ -48,7 +48,6 @@ export const loginUser = (payload) => {
     return async (dispatch) => {
         try{
             dispatch({ type: LOGIN_USER_LOADING});
-            axios.defaults.baseURL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1";
             const reqData = await axios.post("/auth/signin", payload);
             if(reqData.status === 200){
                 dispatch({ 
@@ -75,14 +74,17 @@ export const loginUser = (payload) => {
 };
 
 export const logoutUser = () => {
-    return async (dispatch, getState) => {
-        const state = getState();
+    return async (dispatch) => {
         try {
-            const {authReducer: {authData: {token}}} = state;
-            
             dispatch({
-                type: USER_LOGGED_OUT_SUCCESS
+                type: USER_LOGGED_OUT_SUCCESS,
+                token: null,
+                isLoggedIn: false
             });
+            dispatch({
+                type: AUTH_USER_FAIL,
+                token: null
+            })
         } catch (e) {
             console.log(e);
         }

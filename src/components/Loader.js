@@ -1,3 +1,4 @@
+//  Required packages
 import React, { Component } from 'react';
 import {
     View,
@@ -5,10 +6,11 @@ import {
     ActivityIndicator
 } from 'react-native';
 
+// Simple loader for waiting data to load
 class Loader extends Component {
 
+    // One big circle for loading
     render() {
-
         return (
             <View style={styles.container}>
                 <ActivityIndicator 
