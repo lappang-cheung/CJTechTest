@@ -46,8 +46,6 @@ export const fetchApi = async (url, method, body, statusCode, token = null, load
 
         const response = await api(url, method, body, headers);
 
-        console.log(response);
-
         if(response.status === statusCode) {
             result.success = true;
 

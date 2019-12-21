@@ -11,8 +11,8 @@ class Routes extends Component {
             <Router>
                 <Scene>
                     <Scene key="root" hideNavBar={true} initial={!this.props.isLoggedin}>
-                        <Scene key="login" component={Login} />
-                        <Scene key="signup" component={Signup} title="Register" initial={true} />
+                        <Scene key="login" component={Login}  initial={true} />
+                        <Scene key="signup" component={Signup}  />
                     </Scene>
                     <Scene key="app" hideNavBar={true} initial={this.props.isLoggedin}>
                         <Scene key="dashboard" component={Dashboard} />
