@@ -6,7 +6,8 @@ import {
     LOGIN_USER_FAIL,
     CREATE_USER_LOADING,
     CREATE_USER_SUCCESS,
-    CREATE_USER_FAIL
+    CREATE_USER_FAIL,
+    USER_LOGGED_OUT_SUCCESS
 } from '../actions/types'
 import {combineReducers} from 'redux';
 
@@ -21,6 +22,18 @@ userInitialState = {
     isSuccess: false,
     errors: null,
 }
+
+const logoutUser = (state=authInitialState, action) => {
+    switch(action.type){
+        case USER_LOGGED_OUT_SUCCESS:
+            return {
+                token: null,
+                isLoggedIn: false
+            };
+        default:
+            return state;
+    };
+};
 
 const authData = (state = authInitialState, action) => {
     switch (action.type) {
@@ -106,6 +119,7 @@ const createUser = (state = userInitialState, action) => {
 
 export default combineReducers({
     createUser,
+    loginUser,
     loginUser,
     authData
 });

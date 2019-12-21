@@ -58,20 +58,19 @@ class Dashboard extends Component {
 
 
         const {getUser:{userDetails}, campaigns:{campaigns}} = this.props;
-         // Won't like destructure in the props
+
         const name = (userDetails) ? userDetails.body.user.firstName : ""
 
-        console.log(campaigns);
 
         return (
             <SafeAreaView style={styles.container}>
                 <Text style={styles.textStyles}>Hello, {name}!</Text>
-                <TouchableOpacity style={styles.button} onPress={this.campaignsActive}>
+                <TouchableOpacity style={styles.button} onPress={this.logoutUser}>
                     <Text style={styles.buttonText}>Logout</Text>
                 </TouchableOpacity>
                 <FlatList
                     data={campaigns}
-                    // renderItem={({ item }) => <Text>{item.id}</Text>}
+                    
                     renderItem={({ item }) => 
                         <ListItem 
                             leftAvatar={{ source: { uri: item.brand.logo } }}
