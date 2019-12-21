@@ -48,7 +48,7 @@ export const loginUser = (payload) => {
         try{
             dispatch({ type: LOGIN_USER_LOADING});
             const response = await fetchApi("/auth/signin", "POST", payload, 200);
-
+            console.log(payload)
             if(response.success){
                 dispatch({ 
                     type: LOGIN_USER_SUCCESS

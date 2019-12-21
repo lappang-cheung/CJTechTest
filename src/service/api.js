@@ -8,7 +8,7 @@ export const api = async (url, method, body = null, headers = {}) => {
 
       const fetchParams = {method, headers};
 
-      if((method === "POST" || method === "PUT") && !reqBody) {
+      if((method === "POST" || method === "PUT" || method === "GET") && !reqBody) {
           throw new Error("Request body required");
       }
 

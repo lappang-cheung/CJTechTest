@@ -9,6 +9,7 @@ import {
 import {connect} from "react-redux";
 
 import {logoutUser} from "../redux/actions/auth.action";
+import {getActiveCampaigns} from "../redux/actions/campaign.action";
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,15 +41,21 @@ const styles = StyleSheet.create({
 
 class Dashboard extends Component {
 
+    
     logoutUser = () => {
         this.props.dispatch(logoutUser());
     }
 
+    campaignsActive = () => {
+        const token = { "token": `Bearer ${this.props.auth.token}`};
+        this.props.dispatch(getActiveCampaigns(this.props.auth.token))
+    };
+
     render() {
 
 
-        console.log(this.props.auth)
-        const {getUser} = this.props;
+        const {getUser, campaigns} = this.props;
+        console.log(campaigns)
         // Won't like destructure in the props
         const name = (getUser && getUser.userDetails) ? getUser.userDetails.body.user.firstName : ""
 
@@ -56,7 +63,7 @@ class Dashboard extends Component {
         return (
             <SafeAreaView style={styles.container}>
             <Text style={styles.textStyles}>Hello, {name}!</Text>
-                <TouchableOpacity style={styles.button} onPress={this.logoutUser}>
+                <TouchableOpacity style={styles.button} onPress={this.campaignsActive}>
                     <Text style={styles.buttonText}>Logout</Text>
                 </TouchableOpacity>
             </SafeAreaView>
@@ -67,7 +74,8 @@ class Dashboard extends Component {
 
 mapStateToProps = (state) => ({
     getUser: state.userReducer.getUser,
-    auth: state.authReducer.authData
+    auth: state.authReducer.authData,
+    campaigns: state.campaignReducer
 });
 
 mapDispatchToProps = (dispatch) => ({
