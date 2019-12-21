@@ -10,14 +10,13 @@ import {
     USER_LOGGED_OUT_SUCCESS,
     AUTH_USER_FAIL
 } from '../actions/types'
-import axios from 'axios'
+import axios from '../../service/api'
 
 export const createNewUser = (payload) => {
 
     return async (dispatch) => {
         try{
             dispatch({ type: CREATE_USER_LOADING});
-            axios.defaults.baseURL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1";
             const reqData = await axios.post("/auth/signin", payload);
 
             if(reqData.status === 200){
@@ -49,7 +48,6 @@ export const loginUser = (payload) => {
     return async (dispatch) => {
         try{
             dispatch({ type: LOGIN_USER_LOADING});
-            axios.defaults.baseURL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1";
             const reqData = await axios.post("/auth/signin", payload);
             if(reqData.status === 200){
                 dispatch({ 

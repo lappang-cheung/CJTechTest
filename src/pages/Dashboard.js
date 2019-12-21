@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
+    View,
     SafeAreaView,
     TouchableOpacity,
     FlatList,
@@ -17,25 +18,33 @@ const styles = StyleSheet.create({
 		backgroundColor: '#455a64',
         flexGrow: 1
     },
+    topContainer: {
+        flexGrow: 1,
+        alignItems: 'flex-start',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     textStyles: {
-        color: "#ffffff"
+        color: "#ffffff",
+        paddingLeft: 10,
+        paddingTop: 20
     },
     textStyle: {
         color: "#fff",
-        fontSize: 18
+        fontSize: 18,
     },
     button: {
-      width:130,
-      backgroundColor:'#1c313a',
-      borderRadius: 25,
-      marginVertical: 10,
-      paddingVertical: 13,
+        width:130,
+        backgroundColor:'#1c313a',
+        borderRadius: 25,
+        marginVertical: 10,
+        paddingVertical: 10,
     },
     buttonText: {
-      fontSize:16,
-      fontWeight:'500',
-      color:'#ffffff',
-      textAlign:'center'
+        fontSize:12,
+        fontWeight:'500',
+        color:'#ffffff',
+        textAlign:'center'
     }
 });
 
@@ -64,13 +73,15 @@ class Dashboard extends Component {
 
         return (
             <SafeAreaView style={styles.container}>
-                <Text style={styles.textStyles}>Hello, {name}!</Text>
-                <TouchableOpacity style={styles.button} onPress={this.logoutUser}>
-                    <Text style={styles.buttonText}>Logout</Text>
-                </TouchableOpacity>
+                <View style={styles.topContainer}>
+                    <Text style={styles.textStyles}>Hello, {name}!</Text>
+                    <TouchableOpacity style={styles.button} onPress={this.logoutUser}>
+                        <Text style={styles.buttonText}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
+                
                 <FlatList
                     data={campaigns}
-                    
                     renderItem={({ item }) => 
                         <ListItem 
                             leftAvatar={{ source: { uri: item.brand.logo } }}
