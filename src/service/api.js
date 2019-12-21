@@ -1,57 +1,89 @@
 const BASE_URL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1";
 
-export const  api = async (url, method, body = null. header={}) => {
-    
-    try{
-        const endPoint = BASE_URL.concat(url);
-        const reqBody = body ? JSON.stringify(body) : {}
+export const api = async (url, method, body = null, headers = {}) => {
 
-        const fetchParams = {mthod, headers};
+    try {
+      const endPoint = BASE_URL.concat(url);
+      const reqBody = body ? JSON.stringify(body) : null;
 
-        if((method  === "POST" && method === "PUT") && !reqBody){
-            throw new Error("Request body is required");
-        }
+      const fetchParams = {method, headers};
 
-        if(body){
-            fetchParams.headers["Content-type"] = "application/json";
-            fetchParams.body = fetchParams;
-        }
+      if((method === "POST" || method === "PUT") && !reqBody) {
+          throw new Error("Request body required");
+      }
 
-        const fetchPromise = fetch(endPoint, fetchParams);
-        const timeOutPromise = new Promise ((resolve, reject) => {
-            setTimeout(() => {
-                reject();
-            }, 10000)
-        });
+      if(reqBody) {
+          fetchParams.headers["Content-type"] = "application/json";
+          fetchParams.body = reqBody;
+      }
 
-        const response = Promise.race([fetchPromise, timeOutPromise]);
+      const fetchPromise = fetch(endPoint, fetchParams);
+      const timeOutPromise = new Promise((resolve, reject) => {
+          setTimeout(() => {
+              reject("Request Timeout");
+          }, 3000);
+      });
 
-        return response;
-    }catch(e){
-        throw new Error(e);
-    };
-};
+      const response = await Promise.race([fetchPromise, timeOutPromise]);
 
-export const fetchApi = async (url, method, body, statusCode, token=null, loader=false) => {
+      return response;
+    } catch (e) {
+      return e;
+    }
+}
 
-    try{
-        const headers = {};
-        
-        if(token){
-            headers["x-auth"] = token;
+export const fetchApi = async (url, method, body, statusCode, token = null, loader = false) => {
+    try {
+        const headers = {}
+        const result = {
+            token: null,
+            success: false,
+            responseBody: null
         };
+        if(token) {
+            headers["x-auth"] = token;
+        }
 
-        const response = api(url, method, body, headers);
+        const response = await api(url, method, body, headers);
+
+        console.log(response);
 
         if(response.status === statusCode) {
-            const responseBody = await response.json();
-            return responseBody;
-        };
+            result.success = true;
 
-        throw response;
+            if(response.headers.get("x-auth")) {
+                result.token = response.headers.get("x-auth");
+            }
 
+            let responseBody;
+            const responseText = await response.text();
 
-    }catch(error){
-        throw error;
-    };
-};
+            try {
+                responseBody = JSON.parse(responseText);
+            } catch (e) {
+                responseBody = responseText;
+            }
+
+            result.responseBody = responseBody;
+            return result;
+
+        }
+
+        let errorBody;
+        const errorText = await response.text();
+
+        try {
+            errorBody = JSON.parse(errorText);
+        } catch (e) {
+            errorBody = errorText;
+        }
+
+        result.responseBody = errorBody;
+
+        console.log(result);
+
+        throw result;
+    } catch (error) {
+        return error;
+    }
+}

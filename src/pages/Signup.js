@@ -6,10 +6,15 @@ import {
     TouchableOpacity
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
 import {Field, reduxForm} from 'redux-form';
+
+import {createNewUser} from '../redux/actions/auth.action';
 
 import Logo from '../components/Logo';
 import InputText from '../components/InputText';
+import Loader from '../components/Loader';
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,7 +58,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         paddingHorizontal: 16,
         paddingBottom: 8
-    }
+    },
+    inputBox: {
+        height: 40
+    },
 });
 
 
@@ -68,6 +76,7 @@ class Signup extends Component {
         return (
             <View>
               <InputText
+                style={styles.inputBox}
                 onChangeText={onChange}
                 maxLength={maxLength}
                 placeholder={placeholder}
@@ -80,16 +89,21 @@ class Signup extends Component {
         );
     }
 
+    createNewUser = (values) => {
+        this.props.dispatch(createNewUser(values))
+    }
+
     onSubmit = (values) => {
-        console.log(values)
+        this.createNewUser(values);
     }
 
     render() {
 
-        const {handleSubmit} = this.props;
+        const {handleSubmit, createUser} = this.props;
 
         return (
             <View style={styles.container}>
+                {createUser.isLoading && <Loader />}
                 <Logo />
                 <Field
                     name="name"
@@ -142,7 +156,18 @@ const validate = (values) => {
     return errors;
 };
 
-export default reduxForm({
-    form: 'register',
-    validate
-})(Signup);
+const mapStateToProps = (state) => ({
+    createUser: state.authReducer.createUser
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    dispatch
+});
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    reduxForm({
+        form: 'register',
+        validate
+    })
+)(Signup);

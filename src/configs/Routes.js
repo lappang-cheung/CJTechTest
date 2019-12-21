@@ -3,15 +3,21 @@ import {Router, Stack, Scene} from 'react-native-router-flux';
 
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
+import Dashboard from '../pages/Dashboard';
 
 class Routes extends Component {
     render(){
         return(
             <Router>
-                <Stack key="root" hideNavBar={true}>
-                    <Scene key="login" component={Login} title="Login"  />
-                    <Scene key="signup" component={Signup} title="Signup" initial={true} />
-                </Stack>
+                <Scene>
+                    <Scene key="root" hideNavBar={true} initial={!this.props.isLoggedin}>
+                        <Scene key="login" component={Login} />
+                        <Scene key="signup" component={Signup} title="Register" initial={true} />
+                    </Scene>
+                    <Scene key="app" hideNavBar={true} initial={this.props.isLoggedin}>
+                        <Scene key="dashboard" component={Dashboard} />
+                    </Scene>
+                </Scene>
             </Router>
         );
     };
