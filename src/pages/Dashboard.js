@@ -1,3 +1,4 @@
+// Required classes
 import React, { Component } from 'react';
 import {
     Text,
@@ -9,6 +10,7 @@ import {
 import {connect} from "react-redux";
 import { ListItem } from 'react-native-elements';
 
+// Redux actions
 import {logoutUser} from "../redux/actions/auth.action";
 import {
     getActiveCampaigns, 
@@ -16,41 +18,49 @@ import {
     getNegotationCampaigns
 } from "../redux/actions/campaign.action";
 
+// Loader
 import Loader from '../components/Loader';
-
+//  Custom styles
 import dashboardStyles from '../styles/Dashboard/dashboardStyles'
 
 
 class Dashboard extends Component {
-
+    /*
+     * Need to check which data is being shown: "Active", "Opportunity" & "Negoitation"
+     * Minor state to check which button is active
+     */
     state = {
         campaignData: {},
         buttonSelected: 1
     }
 
+    // Mount the Active Campaign
     componentDidMount = async () => {
        await this.campaignsActive(this.props.auth.token)
     }
-    
+    // Log out user
     logoutUser = () => {
         this.props.dispatch(logoutUser());
     }
 
+    // Set data to be Active
     campaignsActive = async (token) => {
         await this.props.dispatch(getActiveCampaigns(token));
         this.loadCampaignData(this.props.activeCampaigns)
     };
 
+    // Set data to be Opportunity
     campaignsOpportunity = async (token) => {
         await this.props.dispatch(getOpportunityCampaigns(token));
         this.loadCampaignData(this.props.opportunityCampaigns)
     };
-
+    // Set data to be Negoitation
     campaignsNegotation = async (token) => {
         await this.props.dispatch(getNegotationCampaigns(token));
         this.loadCampaignData(this.props.negotationCampaigns)
     };
 
+    // Data switch between the campaigns
     loadCampaignData = (data) => {
         this.setState({
             campaignData: data
@@ -59,10 +69,11 @@ class Dashboard extends Component {
 
     render() {
 
-
+        // Get the user data and token
         const {getUser:{userDetails}, auth: {token}} = this.props;
+        // Get the state
         const {campaignData, buttonSelected} = this.state;
-
+        // Get the name and set to null if nothing returns
         const name = (userDetails) ? userDetails.body.user.firstName : ""
 
 
@@ -82,6 +93,7 @@ class Dashboard extends Component {
                         <View style={dashboardStyles.buttonContainer}>
 
                             <TouchableOpacity
+                                disabled={buttonSelected == 1}
                                 style={buttonSelected == 1 ? dashboardStyles.campaignButtonSelected : dashboardStyles.campaignButtons} 
                                 title="Active"
                                 onPress={() => {this.campaignsActive(token), this.setState({buttonSelected: 1})}}
@@ -90,6 +102,7 @@ class Dashboard extends Component {
                             </TouchableOpacity>
 
                             <TouchableOpacity
+                            disabled={buttonSelected == 2}
                                 style={buttonSelected == 2 ? dashboardStyles.campaignButtonSelected : dashboardStyles.campaignButtons}
                                 title="Opportunity"
                                 onPress={() => {this.campaignsOpportunity(token), this.setState({buttonSelected: 2})}}
@@ -97,6 +110,7 @@ class Dashboard extends Component {
                                 <Text style={dashboardStyles.campaignButtonText}>Opportunity</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
+                                disabled={buttonSelected == 3}
                                 style={buttonSelected == 3 ? dashboardStyles.campaignButtonSelected : dashboardStyles.campaignButtons} 
                                 title="Negotation"
                                 onPress={() => {this.campaignsNegotation(token), this.setState({buttonSelected: 3})}}

@@ -13,8 +13,8 @@ import {Field, reduxForm, reset} from 'redux-form';
 import {loginUser} from '../redux/actions/auth.action';
 
 import Logo from '../components/Logo';
-import InputText from '../components/InputText';
 import Loader from '../components/Loader';
+import renderTextInput from '../components/renderTextInput';
 
 import loginStyles from '../styles/Login/loginStyles';
 
@@ -25,23 +25,7 @@ class Login extends Component {
         Actions.signup();
     };
 
-    renderTextInput = (field) => {
-        const {meta: {touched, error}, label, secureTextEntry, maxLength, keyboardType, placeholder, input: {onChange, ...restInput}} = field;
-        return (
-            <View>
-              <InputText
-                style={loginStyles.inputBox}
-                onChangeText={onChange}
-                maxLength={maxLength}
-                placeholder={placeholder}
-                keyboardType={keyboardType}
-                secureTextEntry={secureTextEntry}
-                label={label}
-                {...restInput} />
-                {(touched && error) && <Text style={loginStyles.errorText}>{error}</Text>}
-            </View>
-        );
-    }
+    
 
     loginUser = async (values) => {
         
@@ -77,13 +61,13 @@ class Login extends Component {
                 <Field
                     name="email"
                     placeholder="Email"
-                    component={this.renderTextInput}
+                    component={renderTextInput}
                 />
                 <Field
                     name="password"
                     placeholder="Password"
                     secureTextEntry={true}
-                    component={this.renderTextInput}
+                    component={renderTextInput}
                 />
 
                 <TouchableOpacity

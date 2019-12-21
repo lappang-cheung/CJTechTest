@@ -1,3 +1,4 @@
+// Required class
 import React, { Component } from 'react';
 import {
     Text,
@@ -6,6 +7,7 @@ import {
     StyleSheet
 } from 'react-native';
 
+// To show logo
 class Logo extends Component {
     render() {
         return (

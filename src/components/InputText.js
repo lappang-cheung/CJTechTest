@@ -1,7 +1,7 @@
 
 import PropTypes from "prop-types";
 import React, {Component} from "react";
-import {TextInput, Text, View, StyleSheet} from "react-native";
+import {TextInput, View, StyleSheet} from "react-native";
 
 const propTypes = {
     mapElement: PropTypes.func,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
 });
 
-class InputText extends Component<{}> {
+class InputText extends Component {
 
     state = {
         value: ""
