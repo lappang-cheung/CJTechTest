@@ -10,7 +10,19 @@ import {
 } from '../actions/types'
 import {combineReducers} from 'redux';
 
-const authData = (state = {}, action) => {
+authInitialState = {
+    token: null,
+    isLoggedIn: false
+}
+
+userInitialState = {
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    errors: null,
+}
+
+const authData = (state = authInitialState, action) => {
     switch (action.type) {
         case AUTH_USER_SUCCESS:
             return {
@@ -30,7 +42,7 @@ const authData = (state = {}, action) => {
     }
 }
 
-const loginUser = (state={}, action) => {
+const loginUser = (state = userInitialState, action) => {
     switch(action.type) {
         case LOGIN_USER_LOADING:
             return {
@@ -61,7 +73,7 @@ const loginUser = (state={}, action) => {
     }
 }
 
-const createUser = (state={}, action) => {
+const createUser = (state = userInitialState, action) => {
     switch(action.type) {
         case CREATE_USER_LOADING:
             return {

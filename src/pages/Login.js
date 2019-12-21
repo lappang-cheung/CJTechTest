@@ -3,12 +3,13 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {Field, reduxForm} from 'redux-form';
+import {Field, reduxForm, reset} from 'redux-form';
 
 import {loginUser} from '../redux/actions/auth.action';
 
@@ -89,13 +90,31 @@ class Login extends Component {
         );
     }
 
-    loginUser = (values) => {
-        this.props.dispatch(loginUser(values))
-    }
+    loginUser = async (values) => {
+        
+        await this.props.dispatch(loginUser(values));
 
-    onSubmit = (values) => {
+        console.log(this.props.loginUser)
+
+        if(this.props.loginUser.isSuccess !== true){
+           
+            Alert.alert(
+                'Warning',
+                'Invalid email or password',
+                [
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                {cancelable: false},
+            );
+        };
+    
+    };
+        
+
+    onSubmit = (values, dispatch) => {
         this.loginUser(values);
-    }
+        dispatch(reset('login'));
+    };
 
     render() {
 

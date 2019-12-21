@@ -50,7 +50,6 @@ export const loginUser = (payload) => {
             dispatch({ type: LOGIN_USER_LOADING});
             axios.defaults.baseURL = "https://cloutjam-real-backend-k2223w.herokuapp.com/v1";
             const reqData = await axios.post("/auth/signin", payload);
-            
             if(reqData.status === 200){
                 dispatch({ 
                     type: LOGIN_USER_SUCCESS
@@ -69,7 +68,7 @@ export const loginUser = (payload) => {
         }catch(error){
             dispatch({ 
                 type: LOGIN_USER_FAIL,
-                payload: error._response
+                payload: error
             });
         }
     };
