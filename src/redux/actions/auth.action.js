@@ -10,6 +10,9 @@ export const createNewUser = (payload) => {
             if(response.success){
                 dispatch({ 
                     type: "CREATE_USER_SUCCESS",
+                });
+                dispatch({
+                    type: "AUTH_USER_SUCCESS",
                     token: response.token
                 });
                 dispatch({
@@ -37,7 +40,10 @@ export const loginUser = (payload) => {
 
             if(response.success){
                 dispatch({ 
-                    type: "LOGIN_USER_SUCCESS",
+                    type: "LOGIN_USER_SUCCESS"
+                });
+                dispatch({
+                    type: "AUTH_USER_SUCCESS",
                     token: response.token
                 });
                 dispatch({
@@ -56,3 +62,17 @@ export const loginUser = (payload) => {
     };
 };
 
+export const logoutUser = () => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        try {
+            const {authReducer: {authData: {token}}} = state;
+            const response = await fetchApi("/user/logout", "DELETE", null, 200, token);
+            dispatch({
+                type: "USER_LOGGED_OUT_SUCCESS"
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}

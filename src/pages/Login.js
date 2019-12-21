@@ -99,10 +99,11 @@ class Login extends Component {
 
     render() {
 
-        const {handleSubmit} = this.props;
+        const {handleSubmit, loginUser} = this.props;
 
         return (
             <View style={styles.container}>
+                {(loginUser && loginUser.isLoading) && <Loader/>}
                 <Logo />
                 <Field
                     name="email"
@@ -151,7 +152,7 @@ const validate = (values) => {
 };
 
 const mapStateToProps = (state) => ({
-    createUser: state.authReducer.createUser
+    loginUser: state.authReducer.loginUser
 })
 
 const mapDispatchToProps = (dispatch) => ({

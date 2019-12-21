@@ -62,9 +62,6 @@ export const fetchApi = async (url, method, body, statusCode, token = null, load
             }
 
             result.responseBody = responseBody;
-
-            console.log(result)
-
             return result;
 
         }
