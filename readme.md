@@ -1,5 +1,5 @@
 # Technical Test
-This is a technical test for CloutJam and to connect their backend servers.
+This is a technical test for CloutJam and to connect their backend servers. This was written using in React Native cli and not the EXPO.
 
 ## Technology Stack & Packages Used
 React-Native (Mobile Framework for React)
@@ -9,6 +9,8 @@ Redux-Form (Form using Redux)
 React-Native-Elements, React-Native-Vector-Icons (Custom element for React-Native)
 
 ## Installation & Running
+Follow the installation quick guide on https://facebook.github.io/react-native/docs/getting-started
+
 For NPM user:
 1. npm install
 2. npm run ios | android (depend on which device)
