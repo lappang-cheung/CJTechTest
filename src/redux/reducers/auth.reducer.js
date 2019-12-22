@@ -120,6 +120,6 @@ const createUser = (state = userInitialState, action) => {
 export default combineReducers({
     createUser,
     loginUser,
-    loginUser,
+    logoutUser,
     authData
 });
