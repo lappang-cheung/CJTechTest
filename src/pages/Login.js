@@ -1,3 +1,4 @@
+//  Redux + Redux-Form
 import React, { Component } from 'react';
 import {
     Text,
@@ -9,28 +10,26 @@ import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {Field, reduxForm, reset} from 'redux-form';
-
+// Redux loginuser
 import {loginUser} from '../redux/actions/auth.action';
-
+// Custom components
 import Logo from '../components/Logo';
 import Loader from '../components/Loader';
 import renderTextInput from '../components/renderTextInput';
-
+// Styles
 import loginStyles from '../styles/Login/loginStyles';
 
 
 class Login extends Component {
-
+    // Pushes to scene for signup
     login = () => {
         Actions.signup();
     };
 
-    
-
+    // User login
     loginUser = async (values) => {
-        
         await this.props.dispatch(loginUser(values));
-
+        // Failure check for invalid login
         if(this.props.loginUser.isSuccess !== true){
             Alert.alert(
                 'Warning',
@@ -41,10 +40,9 @@ class Login extends Component {
                 {cancelable: false},
             );
         };
-    
     };
         
-
+    // Redux submit and reset form
     onSubmit = (values, dispatch) => {
         this.loginUser(values);
         dispatch(reset('login'));
@@ -90,6 +88,7 @@ class Login extends Component {
     };
 };
 
+// Validation
 const validate = (values) => {
     const errors = {};
     if(!values.name){

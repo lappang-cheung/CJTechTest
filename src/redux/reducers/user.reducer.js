@@ -6,6 +6,7 @@ import {
 } from '../actions/types'
 import { combineReducers} from 'redux';
 
+// User state
 intialState = {
     isLoading: false,
     isError: false,
@@ -14,6 +15,7 @@ intialState = {
     errors: null
 }
 
+// Get user
 const getUser = (state = intialState, action) => {
     switch (action.type){
         case GET_USER_LOADING:
@@ -46,6 +48,7 @@ const getUser = (state = intialState, action) => {
     }
 }
 
+// Combine reducers
 export default combineReducers({
     getUser
 });
