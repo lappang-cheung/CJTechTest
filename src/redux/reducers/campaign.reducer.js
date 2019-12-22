@@ -1,3 +1,4 @@
+//  Custom types
 import {
     GET_ACTIVE_CAMPAIGNS_LOADING,
     GET_ACTIVE_CAMPAIGNS_SUCCESS,
@@ -11,21 +12,22 @@ import {
 } from '../actions/types'
 import {combineReducers} from 'redux'
 
+// Campagin for active
 const activeInitialState = {
     campaigns: [],
     loading: false
 }
-
+//  Campaign for opportunity
 const opportunityInitialState = {
     campaigns: [],
     loading: false
 }
-
+//  Campaign for negitation
 const negotationInitialState = {
     campaigns: [],
     loading: false
 }
-
+// Get active campagins
 const getActiveCampaigns = (state = activeInitialState, action) => {
     switch(action.type) {
 
@@ -52,7 +54,7 @@ const getActiveCampaigns = (state = activeInitialState, action) => {
             return state;
     }
 }
-
+// Get opportunity campagins
 const getOpportunityCampaigns = (state = opportunityInitialState, action) => {
     switch(action.type) {
 
@@ -79,7 +81,7 @@ const getOpportunityCampaigns = (state = opportunityInitialState, action) => {
             return state;
     }
 }
-
+// Get opportunity campaigns
 const getNegotationCampaigns = (state = negotationInitialState, action) => {
     switch(action.type) {
 
@@ -106,7 +108,7 @@ const getNegotationCampaigns = (state = negotationInitialState, action) => {
             return state;
     }
 }
-
+//  combine reducers
 export default combineReducers({
     getActiveCampaigns,
     getOpportunityCampaigns,
