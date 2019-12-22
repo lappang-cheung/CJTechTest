@@ -1,5 +1,5 @@
 # Technical Test
-This is a technical test for CloutJam and to connect their backend servers.
+This is a technical test for CloutJam and to connect their backend servers. This was written using in React Native cli and not the EXPO.
 
 ## Technology Stack & Packages Used
 React-Native (Mobile Framework for React)
