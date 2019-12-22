@@ -1,3 +1,4 @@
+// Custom Types
 import {
     AUTH_USER_FAIL,
     AUTH_USER_SUCCESS,
@@ -11,11 +12,13 @@ import {
 } from '../actions/types'
 import {combineReducers} from 'redux';
 
+// Set state for auth
 authInitialState = {
     token: null,
     isLoggedIn: false
 }
 
+// Set state for user
 userInitialState = {
     isLoading: false,
     isError: false,
@@ -23,18 +26,7 @@ userInitialState = {
     errors: null,
 }
 
-const logoutUser = (state=authInitialState, action) => {
-    switch(action.type){
-        case USER_LOGGED_OUT_SUCCESS:
-            return {
-                token: null,
-                isLoggedIn: false
-            };
-        default:
-            return state;
-    };
-};
-
+// auth user
 const authData = (state = authInitialState, action) => {
     switch (action.type) {
         case AUTH_USER_SUCCESS:
@@ -55,6 +47,22 @@ const authData = (state = authInitialState, action) => {
     }
 }
 
+// logout user
+const logoutUser = (state=authInitialState, action) => {
+    switch(action.type){
+        case USER_LOGGED_OUT_SUCCESS:
+            return {
+                token: null,
+                isLoggedIn: false
+            };
+        default:
+            return state;
+    };
+};
+
+
+
+// login user
 const loginUser = (state = userInitialState, action) => {
     switch(action.type) {
         case LOGIN_USER_LOADING:
@@ -86,6 +94,7 @@ const loginUser = (state = userInitialState, action) => {
     }
 }
 
+// create user
 const createUser = (state = userInitialState, action) => {
     switch(action.type) {
         case CREATE_USER_LOADING:
@@ -117,9 +126,10 @@ const createUser = (state = userInitialState, action) => {
     }
 }
 
+//  combine reducers
 export default combineReducers({
     createUser,
     loginUser,
-    loginUser,
+    logoutUser,
     authData
 });

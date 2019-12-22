@@ -1,3 +1,4 @@
+//  Custom types
 import {
     GET_USER_LOADING,
     GET_USER_SUCCESS,
@@ -5,7 +6,17 @@ import {
 } from '../actions/types'
 import { combineReducers} from 'redux';
 
-const getUser = (state={}, action) => {
+// User state
+intialState = {
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    userDetails: null,
+    errors: null
+}
+
+// Get user
+const getUser = (state = intialState, action) => {
     switch (action.type){
         case GET_USER_LOADING:
             return {
@@ -37,6 +48,7 @@ const getUser = (state={}, action) => {
     }
 }
 
+// Combine reducers
 export default combineReducers({
     getUser
 });
